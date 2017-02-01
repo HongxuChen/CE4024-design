@@ -9,7 +9,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
@@ -174,3 +173,5 @@ captures/
 /project/
 /.idea/
 
+*.log
+/SUBMIT/

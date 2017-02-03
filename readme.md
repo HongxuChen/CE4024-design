@@ -1,4 +1,8 @@
+CECZ4024
+=========
+
 ## Setup
+
 This Java project is managed by [sbt](http://www.scala-sbt.org/index.html). The structure of the project is as follows:
 
 ```
@@ -40,8 +44,9 @@ To set up run `./sbt test:compile` or `sbt.bat test:compile`; the first run woul
 
 The recommended IDEs are:
 
-- [Intellij](https://www.jetbrains.com/idea/#chooseYourEdition). You should select the Scala developing environment, which includes the two plugins: `sbt` and `scala`; otherwise you can install from `Preferences` / `Plugins`. Afterwards, `File`/`New`/`Projects from Existing Sources...`, choose this project folder and select `sbt` as the build tool. See more details on https://www.jetbrains.com/help/idea/2016.3/creating-and-running-your-scala-application.html .
-- [Eclipse](http://scala-ide.org/). ScalaIDE is an eclipse plugin. The detailed tutorial is [here](http://scala-ide.org/docs/current-user-doc/gettingstarted/index.html).
+- [Eclipse4](https://eclipse.org/). You can choose `Import` / `Existing Projects into Workspace`. If that doesn't work, run `./sbt eclipse` (or `sbt.bat eclipse`) in the command line before hand.
+
+- [Intellij](https://www.jetbrains.com/idea/#chooseYourEdition). You should select the Scala developing environment, which includes the two plugins: `sbt` and `scala`; otherwise you can install from `Preferences` / `Plugins`. Afterwards, use `File`/`New`/`Projects from Existing Sources...`, choose this project folder and select `sbt` as the build tool. See more details on https://www.jetbrains.com/help/idea/2016.3/creating-and-running-your-scala-application.html.
 
 ## Submission
 

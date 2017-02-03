@@ -125,6 +125,26 @@ public class Oracle {
         return res;
     }
 
+    public byte[] mac0(int n) {
+        byte[] input = new byte[n * BlockSize];
+        return mac(input);
+    }
+
+    public byte[] mac3(byte[] input) {
+        int length = input.length;
+        int threeBlockSize = BlockSize * 3;
+        if (length == threeBlockSize) {
+            return mac(input);
+        } else if (length > threeBlockSize) {
+            byte[] truncated = Arrays.copyOfRange(input, 0, threeBlockSize);
+            return mac(truncated);
+        } else {
+            byte[] zeros = new byte[threeBlockSize - length];
+            byte[] padded = concat(input, zeros);
+            return mac(padded);
+        }
+    }
+
     public byte[] mac1(byte[] input) {
         List<byte[]> oList = encrypt(input);
         logger.info(dumpListsOfBytes(oList));

@@ -26,7 +26,7 @@ class MACAttackerSpec extends CryptoSpec {
   lazy val getInput = getTests.map(_._1)
 
   def check(attacker: Attacker, oracle: Oracle, input: Array[Byte], resOpt: Option[Array[Byte]]): Boolean = {
-    val cracked = attacker.crackMAC(input)
+    val cracked = attacker.crack(input)
     resOpt match {
       case Some(given) => {
         //        require(given.deep == cracked.deep)

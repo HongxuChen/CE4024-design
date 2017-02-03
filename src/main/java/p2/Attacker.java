@@ -77,8 +77,42 @@ public class Attacker {
         return res;
     }
 
-    public byte[] crackMAC(byte[] input) {
-        List<byte[]> oList = fakeEncrypt(input);
+    public List<byte[]> crackImpl(byte[] input) {
+        // calculate OO1, OO2, OO3 with mac0
+        // BLK=8
+        // z0 = [0x00 * BLK]
+        // z0 for oo1, mac0(BLK) = oo1
+        byte[] oo1 = oracle.mac0(1);
+        // z0++z0 for oo2, mac0(2*BLK) = oo1 ⊕ oo2
+        // oo2 = mac0(2*BLK) ⊕ oo1
+        byte[] oo2 = safeXor(oracle.mac0(2), oo1);
+        byte[] xor12 = safeXor(oo1, oo2);
+        // split input into List; already padded
+        List<byte[]> msgList = splitMsgBytes(input);
+        // init oList
+        List<byte[]> oList = initOList();
+        /// fake encryption
+        // for d = z0++z0++m
+        byte[] twoBlockZeros = new byte[2 * BlockSize];
+        for (int i = 0; i < msgList.size(); ++i) {
+            byte[] oi = oList.get(i);
+            // for d = [oo1, oo2, m ⊕ oo2]
+            // E(m) = mac3(d) ⊕ oo1 ⊕ oo2
+            byte[] m = safeXor(oi, msgList.get(i));
+            byte[] d = safeXor(m, oo2);
+            byte[] finalInput = concat(twoBlockZeros, d);
+            require(finalInput.length == 3 * BlockSize,
+                    String.format("input.len=%d, should be %d", finalInput.length, 3 * BlockSize));
+            byte[] mac = oracle.mac3(finalInput);
+            byte[] o = safeXor(mac, xor12);
+            oList.add(o);
+        }
+        return oList;
+    }
+
+    public byte[] crack(byte[] input) {
+        //        List<byte[]> oList = fakeEncrypt(input);
+        List<byte[]> oList = crackImpl(input);
         logger.info(dumpListsOfBytes(oList));
         return calculateMAC(oList);
     }
@@ -87,8 +121,11 @@ public class Attacker {
         Oracle oracle = new Oracle();
         Attacker attacker = new Attacker(oracle);
         String s = Config.p2INPUT;
+        //        String s = "12345678";
+        //        byte[] s = new byte[3 * 8];
+        //        System.out.println(ppBytes(oracle.mac0(3)) + "\n" + ppBytes(oracle.mac3(s)));
         byte[] input = ByteUtils.fromHexString(s);
-        byte[] res = attacker.crackMAC(input);
+        byte[] res = attacker.crack(input);
         boolean matched = oracle.check(input, res);
         if (matched) {
             System.out.printf("%s\t%d\n%s\t%d\n",

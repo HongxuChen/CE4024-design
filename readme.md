@@ -48,6 +48,8 @@ The recommended IDEs are:
 
 - [Intellij](https://www.jetbrains.com/idea/#chooseYourEdition). You should select the Scala developing environment, which includes the two plugins: `sbt` and `scala`; otherwise you can install from `Preferences` / `Plugins`. Afterwards, use `File`/`New`/`Projects from Existing Sources...`, choose this project folder and select `sbt` as the build tool. See more details on https://www.jetbrains.com/help/idea/2016.3/creating-and-running-your-scala-application.html.
 
+- [Emacs with ensime-emacs mode](https://github.com/ensime/ensime-emacs).
+
 ## Submission
 
 The submission files the Java source files and the PDF report; for Problem 2, there is an additional file `p2cases.txt` (originally inside `src/test/resources/p2cases.txt`) containing the your test input. The whole folder should be compressed as a zip file. KEEP DIRECTORY STRUCTURE and DO NOT SUBMIT ANY OTHER FILES.

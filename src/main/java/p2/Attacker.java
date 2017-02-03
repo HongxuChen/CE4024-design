@@ -11,7 +11,6 @@ import java.util.List;
 
 import static common.Utils.*;
 
-// TODO currently dummy
 public class Attacker {
 
     private Oracle oracle;
@@ -20,9 +19,9 @@ public class Attacker {
         this.oracle = oracle;
     }
 
-    public static Logger logger = LoggerFactory.getLogger(Attacker.class);
+    private static Logger logger = LoggerFactory.getLogger(Attacker.class);
 
-    public static final int BlockSize = getAlgoBlockSize(Config.DES);
+    private static final int BlockSize = getAlgoBlockSize(Config.DES);
 
     @SuppressWarnings({"unused", "Duplicates"})
     // only for attacker
@@ -53,7 +52,7 @@ public class Attacker {
         return oList;
     }
 
-    public List<byte[]> fakeEncrypt(byte[] input) {
+    private List<byte[]> fakeEncrypt(byte[] input) {
         List<byte[]> msgList = splitMsgBytes(input);
         List<byte[]> oList = initOList();
         for (int i = 0; i < msgList.size(); ++i) {
@@ -92,7 +91,8 @@ public class Attacker {
         byte[] res = attacker.crackMAC(input);
         boolean matched = oracle.check(input, res);
         if (matched) {
-            System.out.printf("%s\t%d\n%s\t%d\n", ByteUtils.toHexString(input), input.length, ByteUtils.toHexString(res), res.length);
+            System.out.printf("%s\t%d\n%s\t%d\n",
+                    ByteUtils.toHexString(input), input.length, ByteUtils.toHexString(res), res.length);
         } else {
             throw new RuntimeException("mismatch");
         }

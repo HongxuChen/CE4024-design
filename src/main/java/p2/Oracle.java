@@ -5,9 +5,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.GeneralSecurityException;
@@ -18,6 +16,7 @@ import java.util.List;
 
 import static common.Utils.*;
 
+@SuppressWarnings("WeakerAccess")
 public class Oracle {
     private static Logger logger = LoggerFactory.getLogger(Oracle.class);
 
@@ -142,10 +141,10 @@ public class Oracle {
         return Arrays.equals(res, c);
     }
 
-    public static void main(String[] args) throws BadPaddingException, IllegalBlockSizeException {
-        Oracle oracle = new Oracle();
-        byte[] res = oracle.cipher.doFinal("01234567".getBytes());
-        System.out.println(ppBytes(res));
-    }
+    //    public static void main(String[] args) throws BadPaddingException, IllegalBlockSizeException {
+    //        Oracle oracle = new Oracle();
+    //        byte[] res = oracle.cipher.doFinal("01234567".getBytes());
+    //        System.out.println(ppBytes(res));
+    //    }
 
 }

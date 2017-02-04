@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 
+import shutil
 import subprocess
 import zipfile
 
@@ -39,8 +40,8 @@ def copy_src(src_root, tgt_root):
         tgt_java = os.path.join(tgt_root, d, java_fname)
         if os.path.exists(tgt_java):
             warn("{} exists".format(tgt_java))
-        os.rename(src_java, src_root)
         prompt("{} => {}".format(src_java, tgt_java))
+        shutil.copyfile(src_java, tgt_java)
 
 
 def sbttest():
@@ -48,29 +49,30 @@ def sbttest():
     return call(cmd)
 
 
-ziproot = os.path.join(DIR, os.path.pardir, "cz4024_submissions")
+ziproot = os.path.join(DIR, os.path.pardir, "cecz4024_submissions")
 
 
-def zipto(zipfilename):
-    zip_ref = zipfile.ZipFile(zipfilename, 'r')
-    zip_ref.extractall(ziproot)
-    zip_ref.close()
+def zipto(zipfpath, zipfilename):
+    zip_ref = zipfile.ZipFile(zipfpath, 'r')
     zipdir_name = zipfilename[:-4]
     zipdir = os.path.join(ziproot, zipdir_name)
+    zip_ref.extractall(zipdir)
+    zip_ref.close()
     return zipdir
 
 
-def run_once(zipfilename):
-    prompt("\n{} STARTING {} {}".format("=" * 40, zipfilename, "=" * 40))
-    zipdir = zipto(zipfilename)
+def run_once(zipfpath):
+    prompt("{} STARTING {} {}".format("=" * 40, zipfpath, "=" * 40))
+    zipfilename = os.path.basename(zipfpath)
+    zipdir = zipto(zipfpath, zipfilename)
     copy_src(zipdir, project_src_root)
     retcode = sbttest()
     if retcode != 0:
-        report(user)
+        report(zipfilename)
     else:
         prompt("DONE: {}".format(zipfilename))
 
 
 if __name__ == '__main__':
-    zipfname = "./STUDENTS/CECZ4024_123.zip"
-    run_once(zipfname)
+    zipfpath = os.path.join(DIR, "STUDENTS/CECZ4024_123.zip")
+    run_once(zipfpath)

@@ -61,7 +61,7 @@ local.properties
 .recommenders
 
 # Eclipse Core
-.project
+/.project
 
 # External tool builders
 .externalToolBuilders/
@@ -107,7 +107,6 @@ local.properties
 *.class
 
 # Generated files
-bin/
 gen/
 out/
 
@@ -143,3 +142,5 @@ target/
 
 .cache-main
 .cache-tests
+
+/.idea/

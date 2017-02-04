@@ -52,21 +52,6 @@ public class Attacker {
         return oList;
     }
 
-    private List<byte[]> fakeEncrypt(byte[] input) {
-        List<byte[]> msgList = splitMsgBytes(input);
-        List<byte[]> oList = initOList();
-        for (int i = 0; i < msgList.size(); ++i) {
-            byte[] oi = oList.get(i);
-            byte[] d = msgList.get(i);
-            byte[] finalInput = safeXor(oi, d);
-            require(d.length == BlockSize, "blockSize");
-            // the effect should be the safe as cipher.doFinal(finalInput)
-            byte[] o = oracle.mac1(finalInput);
-            oList.add(o);
-        }
-        return oList;
-    }
-
     // oList.get(0) is NOT guaranteed to be same length as others
     private byte[] calculateMAC(List<byte[]> oList) {
         require(oList.size() >= 2, "oList.len should >=2");
@@ -77,7 +62,7 @@ public class Attacker {
         return res;
     }
 
-    public List<byte[]> crackImpl(byte[] input) {
+    private List<byte[]> crackImpl(byte[] input) {
         // calculate OO1, OO2, OO3 with mac0
         // BLK=8
         // z0 = [0x00 * BLK]

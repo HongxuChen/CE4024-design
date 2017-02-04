@@ -2,11 +2,10 @@
 
 from __future__ import print_function
 
+import os
 import shutil
 import subprocess
 import zipfile
-
-import os
 
 
 def call(cmd):
@@ -50,6 +49,8 @@ def sbttest():
 
 
 ziproot = os.path.join(DIR, os.path.pardir, "cecz4024_submissions")
+if not os.path.isdir(ziproot):
+    os.makedirs(ziproot)
 
 
 def zipto(zipfpath, zipfilename):
@@ -59,7 +60,6 @@ def zipto(zipfpath, zipfilename):
     zip_ref.extractall(zipdir)
     zip_ref.close()
     return zipdir
-
 
 def run_once(zipfpath):
     prompt("{} STARTING {} {}".format("=" * 40, zipfpath, "=" * 40))
@@ -72,7 +72,18 @@ def run_once(zipfpath):
     else:
         prompt("DONE: {}".format(zipfilename))
 
+def run_many(root):
+    for f in os.listdir(root):
+        if f.endswith(".zip"):
+            fpath = os.path.join(root, f)
+            prompt("=== {}".format(fpath))
+            run_once(fpath)
+    prompt("DONE!")
+
+zipfile_root = os.path.join(DIR, "STUDENTS")
 
 if __name__ == '__main__':
-    zipfpath = os.path.join(DIR, "STUDENTS/CECZ4024_123.zip")
-    run_once(zipfpath)
+    bak_root = os.path.join(ziproot, "bak")
+    run_many(zipfile_root)
+    cmd = "git checkout {}".format(project_src_root)
+    call(cmd)

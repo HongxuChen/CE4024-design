@@ -15,17 +15,18 @@ The recommended eclipse version is >=4.4.
 │   ├── logback-classic-1.1.9.jar  # logging
 │   ├── logback-core-1.1.9.jar     # logging
 │   └── slf4j-api-1.7.5.jar        # logging
+├── pdf                            # the folder for pdf report files, especially if you'd like to use `run.py`
 ├── readme.html                    # readme
-├── readme.md                      # readme (markdown version)
+├── readme.txt                     # readme (in markdown format)
 ├── run.py                         # automation script run before submission
 └── src
     ├── Attacker1.java          # implement & submit
     ├── Attacker2.java          # implement & submit
-    ├── Oracle1.java            # oracle; don't touch/import
-    ├── Oracle2.java            # oracle; Don't touch/import
+    ├── Oracle1.java            # oracle; don't modify
+    ├── Oracle2.java            # oracle; don't modify
     ├── common
-    │   ├── Config.java         # Don't touch/import
-    │   └── Utils.java          # Don't touch/import
+    │   ├── Config.java         # default configuration; don't modify or use it in your implementation functions
+    │   └── Utils.java          # utility functions; don't modify
     └── logback.xml             # logging configuration
 ```
 
@@ -37,7 +38,7 @@ The recommended eclipse version is >=4.4.
 
 ## Submission
 
-The submission files include Java source files and the PDF report files inside one folder, with the structure like below.  
+The submission files include Java source files and the PDF report files inside one folder, with the structure like below.
 KEEP DIRECTORY STRUCTURE and DO NOT SUBMIT ANY OTHER FILES.
 
 The whole folder should then be compressed as a zip file. The zip file name should be `${Matriculation}_${YOUR_NAME}.zip`, where `${Matriculation}` is your matriculation number, `${YOUR_NAME}` is the name with ' '(whitespace) substituted to '_'(underscore); e.g., if your number is `U1234567` and your name is `James Ong`, then the file name is `U1234567_James_Ong.zip`.

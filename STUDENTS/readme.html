@@ -357,17 +357,18 @@ The recommended eclipse version is &gt;=4.4.</p>
 │   ├── logback-classic-1.1.9.jar  # logging
 │   ├── logback-core-1.1.9.jar     # logging
 │   └── slf4j-api-1.7.5.jar        # logging
+├── pdf                            # the folder for pdf report files, especially if you&#39;d like to use `run.py`
 ├── readme.html                    # readme
-├── readme.md                      # readme (markdown version)
+├── readme.txt                     # readme (in markdown format)
 ├── run.py                         # automation script run before submission
 └── src
     ├── Attacker1.java          # implement &amp; submit
     ├── Attacker2.java          # implement &amp; submit
-    ├── Oracle1.java            # oracle; don&#39;t touch/import
-    ├── Oracle2.java            # oracle; Don&#39;t touch/import
+    ├── Oracle1.java            # oracle; don&#39;t modify
+    ├── Oracle2.java            # oracle; don&#39;t modify
     ├── common
-    │   ├── Config.java         # Don&#39;t touch/import
-    │   └── Utils.java          # Don&#39;t touch/import
+    │   ├── Config.java         # default configuration; don&#39;t modify or use it in your implementation functions
+    │   └── Utils.java          # utility functions; don&#39;t modify
     └── logback.xml             # logging configuration</code></pre></div>
 
 <h2 id="toc_2">Tips</h2>
@@ -380,7 +381,7 @@ The recommended eclipse version is &gt;=4.4.</p>
 
 <h2 id="toc_3">Submission</h2>
 
-<p>The submission files include Java source files and the PDF report files inside one folder, with the structure like below.<br><br>
+<p>The submission files include Java source files and the PDF report files inside one folder, with the structure like below.<br>
 KEEP DIRECTORY STRUCTURE and DO NOT SUBMIT ANY OTHER FILES.</p>
 
 <p>The whole folder should then be compressed as a zip file. The zip file name should be <code>${Matriculation}_${YOUR_NAME}.zip</code>, where <code>${Matriculation}</code> is your matriculation number, <code>${YOUR_NAME}</code> is the name with &lsquo; &rsquo;(whitespace) substituted to &lsquo;_&rsquo;(underscore); e.g., if your number is <code>U1234567</code> and your name is <code>James Ong</code>, then the file name is <code>U1234567_James_Ong.zip</code>.</p>

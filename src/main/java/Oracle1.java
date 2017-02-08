@@ -1,5 +1,3 @@
-package p1;
-
 import common.Config;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.slf4j.Logger;
@@ -14,9 +12,9 @@ import java.security.Security;
 import static common.Utils.*;
 
 @SuppressWarnings({"UnnecessaryLocalVariable", "SameParameterValue", "WeakerAccess"})
-public class Oracle {
+public class Oracle1 {
 
-    private static Logger logger = LoggerFactory.getLogger(Oracle.class);
+    private static Logger logger = LoggerFactory.getLogger(Oracle1.class);
 
     final private byte[] SuffixBytes;
 
@@ -24,7 +22,7 @@ public class Oracle {
     private static String ALGO = Config.ALGO;
     private static int BlockSize = getAlgoBlockSize(ALGO);
 
-    public Oracle() {
+    public Oracle1() {
         this(Config.p1Key, Config.p1Suffix);
     }
 
@@ -45,12 +43,12 @@ public class Oracle {
         }
     }
 
-    public Oracle(byte[] keyBytes, byte[] suffixBytes) {
+    public Oracle1(byte[] keyBytes, byte[] suffixBytes) {
         SuffixBytes = suffixBytes;
         init(keyBytes);
     }
 
-    public Oracle(String keyString, String suffixString) {
+    public Oracle1(String keyString, String suffixString) {
         byte[] keyBytes = keyString.getBytes();
         SuffixBytes = suffixString.getBytes();
         init(keyBytes);

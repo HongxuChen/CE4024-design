@@ -1,5 +1,3 @@
-package p2
-
 import common.CryptoSpec
 import org.bouncycastle.pqc.math.linearalgebra.ByteUtils
 import org.scalatest.Inspectors._
@@ -17,14 +15,14 @@ class MACAttackerSpec extends CryptoSpec {
   ).map(ByteUtils.fromHexString)
 
 
-  def check(attacker: Attacker, oracle: Oracle, input: Array[Byte]): Boolean = {
+  def check(attacker: Attacker2, oracle: Oracle2, input: Array[Byte]): Boolean = {
     val cracked = attacker.crack(input)
     oracle.check(input, cracked)
   }
 
   "default case" should "be checked" in {
-    val oracle = new Oracle()
-    val attacker = new Attacker(oracle)
+    val oracle = new Oracle2()
+    val attacker = new Attacker2(oracle)
     forAll(getInput) { input =>
       check(attacker, oracle, input) should be(true)
     }
@@ -33,8 +31,8 @@ class MACAttackerSpec extends CryptoSpec {
 
   "MAC attacker" should "fool oracle to pass check" in {
     val macKey = ByteUtils.fromHexString("a10f773560408799")
-    val oracle = new Oracle(macKey)
-    val attacker = new Attacker(oracle)
+    val oracle = new Oracle2(macKey)
+    val attacker = new Attacker2(oracle)
     forAll(getInput) { input =>
       check(attacker, oracle, input) should be(true)
     }

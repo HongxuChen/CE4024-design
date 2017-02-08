@@ -1,5 +1,3 @@
-package p2;
-
 import common.Config;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.slf4j.Logger;
@@ -17,8 +15,8 @@ import java.util.List;
 import static common.Utils.*;
 
 @SuppressWarnings("WeakerAccess")
-public class Oracle {
-    private static Logger logger = LoggerFactory.getLogger(Oracle.class);
+public class Oracle2 {
+    private static Logger logger = LoggerFactory.getLogger(Oracle2.class);
 
     private Cipher cipher;
     final private byte[] MACKey;
@@ -52,12 +50,12 @@ public class Oracle {
         }
     }
 
-    public Oracle(byte[] macKey) {
+    public Oracle2(byte[] macKey) {
         this.MACKey = macKey;
         init();
     }
 
-    public Oracle() {
+    public Oracle2() {
         this(Config.p2MacKey.getBytes());
         init();
     }

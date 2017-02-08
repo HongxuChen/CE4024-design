@@ -46,7 +46,7 @@ classes/
 deploy/
 javadoc/
 
-# lock file, a part of Oracle Credential Store Framework
+# lock file, a part of Oracle1 Credential Store Framework
 cwallet.sso.lck### Eclipse template
 
 .metadata

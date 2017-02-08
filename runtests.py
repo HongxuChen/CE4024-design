@@ -16,9 +16,8 @@ def call(cmd):
 DIR_ABS = os.path.dirname(os.path.realpath(__file__))
 DIR = os.path.relpath(DIR_ABS, os.path.curdir)
 
-subdirs = ["p1", "p2"]
-java_fname = "Attacker.java"
 project_src_root = "src/main/java"
+P_NUMS = [str(i) for i in [1,2]]
 
 
 def prompt(msg):
@@ -32,16 +31,18 @@ def warn(msg):
 def report(msg):
     print("FAILED: {}".format(msg))
 
+def get_fname(number, ext, prefix="Attacker"):
+    return prefix + number + "." + ext
 
 def copy_src(src_root, tgt_root):
-    for d in subdirs:
-        src_java = os.path.join(src_root, d, java_fname)
-        tgt_java = os.path.join(tgt_root, d, java_fname)
+    for i in P_NUMS:
+        f_name = get_fname(i, "java")
+        src_java = os.path.join(src_root, f_name)
+        tgt_java = os.path.join(tgt_root, f_name)
         if os.path.exists(tgt_java):
             warn("{} exists".format(tgt_java))
         prompt("{} => {}".format(src_java, tgt_java))
         shutil.copyfile(src_java, tgt_java)
-
 
 def sbttest():
     cmd = "sbt test"
@@ -83,7 +84,6 @@ def run_many(root):
 zipfile_root = os.path.join(DIR, "STUDENTS")
 
 if __name__ == '__main__':
-    bak_root = os.path.join(ziproot, "bak")
     run_many(zipfile_root)
     cmd = "git checkout {}".format(project_src_root)
     call(cmd)

@@ -1,5 +1,3 @@
-package p1;
-
 import common.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,17 +7,17 @@ import java.util.Arrays;
 import static common.Utils.*;
 
 @SuppressWarnings({"WeakerAccess", "FieldCanBeLocal", "SameParameterValue"})
-public class Attacker {
+public class Attacker1 {
 
-    private static Logger logger = LoggerFactory.getLogger(Attacker.class);
+    private static Logger logger = LoggerFactory.getLogger(Attacker1.class);
 
-    final private Oracle oracle;
+    final private Oracle1 oracle;
 
-    public Attacker() {
-        this.oracle = new Oracle();
+    public Attacker1() {
+        this.oracle = new Oracle1();
     }
 
-    public Attacker(Oracle oracle) {
+    public Attacker1(Oracle1 oracle) {
         this.oracle = oracle;
     }
 
@@ -53,7 +51,7 @@ public class Attacker {
 
     public byte[] decryptSuffix() {
         byte[] bytes = "0A12B3c".getBytes();
-//        byte[] bytes = "0A12B3c45D67".getBytes();
+        //        byte[] bytes = "0A12B3c45D67".getBytes();
         return decryptSuffix(bytes);
     }
 
@@ -78,8 +76,11 @@ public class Attacker {
     }
 
     public static void main(String[] args) {
-        Attacker attacker = new Attacker();
+        // sample test input
+        Oracle1 oracle = new Oracle1(Config.p1Key, Config.p1Suffix);
+        Attacker1 attacker = new Attacker1(oracle);
         byte[] res = attacker.decryptSuffix();
-        logger.warn("succeed: {}", isConsistent(Config.p1Suffix, res));
+        // should be true
+        System.out.println(isConsistent(Config.p1Suffix, res));
     }
 }

@@ -1,7 +1,7 @@
 package common;
 
 /**
- * this file should NOT be imported by Attacker.java
+ * this file should NOT be imported by Attacker1.java
  */
 
 public class Config {

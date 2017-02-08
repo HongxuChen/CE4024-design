@@ -1,5 +1,3 @@
-package p2;
-
 import common.Config;
 import org.bouncycastle.pqc.math.linearalgebra.ByteUtils;
 import org.slf4j.Logger;
@@ -11,15 +9,15 @@ import java.util.List;
 
 import static common.Utils.*;
 
-public class Attacker {
+public class Attacker2 {
 
-    private Oracle oracle;
+    private Oracle2 oracle;
 
-    public Attacker(Oracle oracle) {
+    public Attacker2(Oracle2 oracle) {
         this.oracle = oracle;
     }
 
-    private static Logger logger = LoggerFactory.getLogger(Attacker.class);
+    private static Logger logger = LoggerFactory.getLogger(Attacker2.class);
 
     private static final int BlockSize = getAlgoBlockSize(Config.DES);
 
@@ -103,14 +101,13 @@ public class Attacker {
     }
 
     public static void main(String[] args) {
-        Oracle oracle = new Oracle();
-        Attacker attacker = new Attacker(oracle);
+        // sample test input
+        Oracle2 oracle = new Oracle2(Config.p2MacKey.getBytes());
+        Attacker2 attacker = new Attacker2(oracle);
         String s = Config.p2INPUT;
-        //        String s = "12345678";
-        //        byte[] s = new byte[3 * 8];
-        //        System.out.println(ppBytes(oracle.mac0(3)) + "\n" + ppBytes(oracle.mac3(s)));
         byte[] input = ByteUtils.fromHexString(s);
         byte[] res = attacker.crack(input);
+        // matched should be true
         boolean matched = oracle.check(input, res);
         if (matched) {
             System.out.printf("%s\t%d\n%s\t%d\n",

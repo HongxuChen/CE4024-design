@@ -4,7 +4,6 @@ from __future__ import print_function
 
 import os
 import shutil
-import subprocess
 import sys
 
 
@@ -16,19 +15,20 @@ def error(msg):
     print("ERROR: {}".format(msg), file=sys.stderr)
 
 
-subdirs = ["p1", "p2"]
-
-java_fname = "Attacker.java"
-report_fname = "Report.pdf"
 DIR = os.path.dirname(os.path.realpath(__file__))
 DIR = os.path.relpath(DIR, os.path.curdir)
-submit_dir = os.path.join(DIR, "CECZ4024")
-src_root = os.path.join(DIR, "src")
-pdf_root = os.path.join(DIR, "pdf")
+SUBMIT_DIR = os.path.join(DIR, "CECZ4024_tmp")
+SRC_ROOT = os.path.join(DIR, "src")
+PDF_ROOT = os.path.join(DIR, "pdf")
+P_NUMS = [str(i) for i in [1, 2]]
 
 
-def _is_pdfs_ready(pdf_root):
-    src_pdfs = [os.path.join(pdf_root, d, report_fname) for d in subdirs]
+def get_fname(number, ext, prefix="Attacker"):
+    return prefix + number + "." + ext
+
+
+def _are_pdfs_ready(pdf_root):
+    src_pdfs = [os.path.join(pdf_root, get_fname(i, "pdf")) for i in P_NUMS]
     for pdf in src_pdfs:
         if not os.path.isfile(pdf):
             error("{} not exists".format(pdf))
@@ -37,7 +37,7 @@ def _is_pdfs_ready(pdf_root):
 
 
 def _final_check(root):
-    files = [os.path.join(root, d, f) for d in subdirs for f in [java_fname, report_fname]]
+    files = [os.path.join(root, get_fname(i, ext)) for i in P_NUMS for ext in ["java", "pdf"]]
     for fpath in files:
         if not os.path.exists(fpath):
             error("{} not found".format(fpath))
@@ -46,17 +46,17 @@ def _final_check(root):
             prompt("* {}".format(fpath))
 
 
-def _copy_src(src_dir, tgt_dir, fname):
-    for sub in subdirs:
-        src_f = os.path.join(src_dir, sub, fname)
+def _copy_src(src_dir, tgt_dir, ext):
+    for num in P_NUMS:
+        f_name = get_fname(num, ext)
+        src_f = os.path.join(src_dir, f_name)
         if not os.path.exists(src_f):
             error("{} not exists".format(src_f))
             exit(1)
-        tgt_parent = os.path.join(tgt_dir, sub)
-        if not os.path.exists(tgt_parent):
-            prompt("creating {}".format(tgt_parent))
-            os.makedirs(tgt_parent)
-        tgt_f = os.path.join(tgt_parent, fname)
+        if not os.path.exists(tgt_dir):
+            prompt("creating {}".format(tgt_dir))
+            os.makedirs(tgt_dir)
+        tgt_f = os.path.join(tgt_dir, f_name)
         prompt("{} => {}".format(src_f, tgt_f))
         shutil.copy(src_f, tgt_f)
 
@@ -64,11 +64,13 @@ def _copy_src(src_dir, tgt_dir, fname):
 def _rename_submit(root):
     prompt("ensure you have collected all files before submission")
     _final_check(root)
-    prompt("""append directory name {} with your matriculation No.
+    prompt("""changing submission directory name {}...
     WARNING: will remove old directory if exists.""".format(root))
     number = raw_input("\nInput your matriculation No.: ")
+    sname = raw_input("Input your name [same as NTULearn; ' '(space) should be substituted with '_' (underscore)]: ")
     print()
-    final_root = root + "_" + number
+    final_fname = number + "_" + sname.replace(" ", "_")
+    final_root = os.path.join(os.path.dirname(root), final_fname)
     if os.path.isdir(final_root):
         prompt("removing all files in old submission folder")
         shutil.rmtree(final_root, True)
@@ -84,13 +86,13 @@ def _rename_submit(root):
 
 def collect_files():
     prompt("copy java files")
-    _copy_src(src_root, submit_dir, java_fname)
-    if not _is_pdfs_ready(pdf_root):
+    _copy_src(SRC_ROOT, SUBMIT_DIR, "java")
+    if not _are_pdfs_ready(PDF_ROOT):
         error("make sure your pdfs are ready")
         exit(1)
     prompt("copy report files")
-    _copy_src(pdf_root, submit_dir, report_fname)
-    _rename_submit(submit_dir)
+    _copy_src(PDF_ROOT, SUBMIT_DIR, "pdf")
+    _rename_submit(SUBMIT_DIR)
     prompt("DONE!")
 
 

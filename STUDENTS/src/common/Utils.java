@@ -21,8 +21,9 @@ public class Utils {
         return sb.toString();
     }
 
-    // may enforce other checks; or simply put inside test
     public static boolean isConsistent(byte[] given, byte[] computed) {
+    	require(given!=null, "given is never null");
+    	if(computed==null) return false;
         if (given.length > computed.length) return false;
         for (int i = 0; i < given.length; ++i) {
             if (given[i] != computed[i]) {
@@ -113,7 +114,7 @@ public class Utils {
     }
 
     public static byte[] paddingBytes(byte[] input, int blockSize) {
-        int paddingSize = blockSize - (input.length % blockSize);
+        int paddingSize = (blockSize - (input.length % blockSize)) % blockSize;
         byte[] padding = new byte[paddingSize];
         return concat(input, padding);
     }

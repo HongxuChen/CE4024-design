@@ -101,20 +101,18 @@ public class Attacker2 {
     }
 
     public static void main(String[] args) {
-        // sample test input
-        Oracle2 oracle = new Oracle2(Config.p2MacKey.getBytes());
+        //////////////////////////////////////////////////
+        // sample input tests
+        // a different key
+        String macKey = "9cdefgh!";
+        // a different input
+        byte[] input = ByteUtils.fromHexString("33a0a1a2a3a4a5a6a70f1f2f3f4f5f6f7fcff176210f519ff2d5366ae5e853491b00");
+        /////////////////////////////////////////////////
+        Oracle2 oracle = new Oracle2(macKey.getBytes());
         Attacker2 attacker = new Attacker2(oracle);
-        String s = Config.p2INPUT;
-        byte[] input = ByteUtils.fromHexString(s);
         byte[] res = attacker.crack(input);
-        // matched should be true
-        boolean matched = oracle.check(input, res);
-        if (matched) {
-            System.out.printf("%s\t%d\n%s\t%d\n",
-                    ByteUtils.toHexString(input), input.length, ByteUtils.toHexString(res), res.length);
-        } else {
-            throw new RuntimeException("mismatch");
-        }
+        // should be true
+        System.out.println(oracle.check(input, res));
     }
 
 }

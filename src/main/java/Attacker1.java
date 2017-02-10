@@ -1,4 +1,5 @@
 import common.Config;
+import org.bouncycastle.pqc.math.linearalgebra.ByteUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,11 +77,15 @@ public class Attacker1 {
     }
 
     public static void main(String[] args) {
-        // sample test input
-        Oracle1 oracle = new Oracle1(Config.p1Key, Config.p1Suffix);
+        ///////////////////////////////////////////////////////////
+        String key = "3%ac^`+=";  // a different key
+        String suffix = "a19q-j*"; // a different suffix
+        ///////////////////////////////////////////////////////////
+        Oracle1 oracle = new Oracle1(key.getBytes(), suffix.getBytes());
         Attacker1 attacker = new Attacker1(oracle);
         byte[] res = attacker.decryptSuffix();
+        ///////////////////////////////////////////////////////////
         // should be true
-        System.out.println(isConsistent(Config.p1Suffix, res));
+        System.out.println(isConsistent(suffix, res));
     }
 }

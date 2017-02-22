@@ -111,6 +111,7 @@ public class Attacker2 {
         Oracle2 oracle = new Oracle2(macKey.getBytes());
         Attacker2 attacker = new Attacker2(oracle);
         byte[] res = attacker.crack(input);
+        System.out.println(ppBytes(res));
         // should be true
         System.out.println(oracle.check(input, res));
     }

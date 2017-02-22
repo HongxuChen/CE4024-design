@@ -5,9 +5,13 @@ import org.slf4j.LoggerFactory;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.AlgorithmParameters;
 import java.security.GeneralSecurityException;
+import java.security.NoSuchAlgorithmException;
 import java.security.Security;
+import java.security.spec.InvalidParameterSpecException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +26,15 @@ public class Oracle2 {
     final private byte[] MACKey;
     private static String ALGO = Config.DES;
     private static int BlockSize = getAlgoBlockSize(ALGO);
+
+    private AlgorithmParameters generateIV() throws NoSuchAlgorithmException, InvalidParameterSpecException {
+        int ivSize = getAlgoBlockSize(ALGO);
+        byte[] iv = new byte[ivSize];
+        Arrays.fill(iv, (byte) 0x00);
+        AlgorithmParameters params = AlgorithmParameters.getInstance(ALGO);
+        params.init(new IvParameterSpec(iv));
+        return params;
+    }
 
     @SuppressWarnings("Duplicates")
     private List<byte[]> initOList() {
@@ -43,7 +56,7 @@ public class Oracle2 {
                 throw new RuntimeException(String.format("illegal ALGO %s with key length %d", ALGO, keyBytes.length));
             }
             cipher = Cipher.getInstance(String.format("%s/%s/NoPadding", ALGO, Config.MODE));
-            cipher.init(Cipher.ENCRYPT_MODE, KEY);
+            cipher.init(Cipher.ENCRYPT_MODE, KEY, generateIV());
         } catch (GeneralSecurityException e) {
             e.printStackTrace();
             System.exit(1);

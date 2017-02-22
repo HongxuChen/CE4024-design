@@ -1,0 +1,84 @@
+# Problem 1
+
+Q: Is it safe to assume that the length of the secret p1Suffix is always the
+same as the block size (i.e. 8 bytes for DES, 16 bytes for AES)?
+
+A: Yes. Indeed there are some inconsistencies between the new Attacker1.java
+(since we used "a19q-j*" which is 7 bytes) and the problem description pdf
+document. However do pay attention to "Utils.isConsistent" which we use for
+checking whether the crack for the suffix succeeds or not. In this sense, they
+are almost equivalent as long as the suffix size is <= block size. Despite
+that, in the unit tests that are used to check your implementations, we only
+use the test cases where secret values(suffixes) are of exactly the same length
+as the block size (i.e., 8 bytes).
+
+
+Q: Is it allowed to manipulate secret key "s" e.g., copy/split/encrypt it?
+
+A: No. The secret value (key/suffix) is unknown to you (attacker) and you
+cannot manipulate it. We will use different values in unit tests. Of course you
+can use some "partial/intermediate result" you get (by cracking) to find the
+final solution (which is a byte array).
+
+
+# Problem 2
+
+Q: When I call mac0 (or mac3) with the same input, every time run I get a
+different result. What's wrong? 
+
+A: This is because of the "CBC" mode we used in our encryption initialization
+procedure: the initialization vector (IV) brings some randomness; therefore for
+different runs the Oracle2 instance is initialized with different IVs. However
+for a single run/session, the results should be the same for the same input
+  (e.g., you can try calling oracle2.mac0 twice to see whether the result is
+  the same).  Note that in real world scenarios, oracle2 is indeed initialized
+  once and then it will work as a server.  For a single unit test in our unit
+  tests (we provide 6 unit tests for Problem 2), the Oracle2 instance is *only
+  initialized once*.
+
+
+# Both
+
+Q: How long will it take for an optimal crack?
+
+A: There may not be any "optimal solution". We have solutions for both
+problems, however we don't know whether it is optimal either; perhaps your
+solution is better.  With our solution, for each problem, we have a unit test
+suite which contains 6 different inputs, we are able to find the right result
+within 3s -- that is, for each problem, by average it takes <= 0.5s to get the
+answer. However implementations that take a few seconds (say, 5s) for a single
+crack can also be considered acceptable in your machine (by taking into account
+different computers' performance). You should try to minimize the time since by
+doing so you will have a high chance to get better scores. A crack that exceeds
+2min will definitely be considered a failure.
+
+
+Q: Why the byte array (i.e., "byte[] bytes") is printed strangely?
+
+A: "System.out.println(bytes)" will print bytes.toString(), rather than
+elements of the array. See
+http://stackoverflow.com/questions/409784/whats-the-simplest-way-to-print-a-java-array
+for some explanations. We have provided a utility function "ppBytes" to print
+  "byte[]"; you can also use "ByteUtils.toHexString", etc.
+
+
+Q: What characters can occur in secret keys?
+
+A: You can assume that any single symbol is within 1 byte (i.e., there are
+2^8=256 choices for a single symbol), therefore symbols like '"\ etc. are
+allowed. The basic idea is that one single symbol can be fit in a variable with
+"byte" type in Java.
+
+
+Q: For ` str="12345678123456789" ', when I call
+` bytes=ByteUtils.fromHexString(str) ', and convert back
+` newStr=ByteUtils.toHexString(bytes) ', now `newStr' is "012345678123456789",
+which is different from `str'. Does it matter?
+
+A: It doesn't matter. Keep in mind that the input/output message is in fact
+byte arrays rather than the hex string representations/views. Our check is
+based on the equality of array elements rather than the representation string.
+You can always use an even-length string in your trials if you also like to
+contruct "non-printable messages" in this way; of course you can directly
+initialize the array, such as `byte[] yourBytes = new byte[9];
+yourBytes[0]=0x01; ...; yourBytes[8]=0x89;'.

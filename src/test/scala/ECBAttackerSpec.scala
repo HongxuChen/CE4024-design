@@ -4,7 +4,7 @@ import org.scalatest.time.{Millis, Span}
 
 class ECBAttackerSpec extends CryptoSpec {
   // 800ms is enough on my machine for AES
-  val timeLimit = Span(1000, Millis)
+  val timeLimit = Span(4000, Millis)
 
   "default suffix" should "match" in {
     val attacker = new Attacker1()

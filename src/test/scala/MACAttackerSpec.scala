@@ -4,7 +4,7 @@ import org.scalatest.Inspectors._
 import org.scalatest.time.{Millis, Span}
 
 class MACAttackerSpec extends CryptoSpec {
-  val timeLimit = Span(2000, Millis)
+  val timeLimit = Span(4000, Millis)
 
 
   lazy val getInput: List[Array[Byte]] = List(

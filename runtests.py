@@ -1,16 +1,20 @@
-#!/usr/bin/env python
-
-from __future__ import print_function
+#!/usr/bin/env python3
 
 import os
 import shutil
 import subprocess
-import zipfile
+import sys
+
+# DON'T record exact time
+# when timeout, double-check
 
 
-def call(cmd):
-    print("{}".format(cmd))
-    return subprocess.call(cmd.split())
+def call(cmd, timeout=None):
+    if timeout is not None:
+        print("{} timeout={}s".format(cmd, timeout))
+    else:
+        print("{}".format(cmd))
+    return subprocess.call(cmd.split(), timeout)
 
 
 DIR_ABS = os.path.dirname(os.path.realpath(__file__))
@@ -25,67 +29,55 @@ def prompt(msg):
 
 
 def warn(msg):
-    print("* {}".format(msg))
+    print("* {}".format(msg), file=sys.stderr)
 
 
 def report(msg):
-    print("FAILED: {}".format(msg))
+    print("FAILED: {}".format(msg), file=sys.stderr)
 
-def get_fname(number, ext, prefix="Attacker"):
+
+def get_filename(number, ext, prefix="Attacker"):
     return prefix + number + "." + ext
+
 
 def copy_src(src_root, tgt_root):
     for i in P_NUMS:
-        f_name = get_fname(i, "java")
+        f_name = get_filename(i, "java")
         src_java = os.path.join(src_root, f_name)
         tgt_java = os.path.join(tgt_root, f_name)
-        if os.path.exists(tgt_java):
-            warn("{} exists".format(tgt_java))
         prompt("{} => {}".format(src_java, tgt_java))
         shutil.copyfile(src_java, tgt_java)
 
-def sbttest():
+
+def sbt_test(submission):
     cmd = "sbt test"
-    return call(cmd)
+    try:
+        call(cmd, timeout=120)
+    except subprocess.TimeoutExpired as e:
+        report(submission)
 
 
-ziproot = os.path.join(DIR, os.path.pardir, "cecz4024_submissions")
-print("ziproot={}".format(ziproot))
-if not os.path.isdir(ziproot):
-    os.makedirs(ziproot)
+def git_check():
+    cmd = "git checkout {}".format(project_src_root)
+    call(cmd, timeout=2)
 
 
-def zipto(zipfpath, zipfilename):
-    zip_ref = zipfile.ZipFile(zipfpath, 'r')
-    zipdir_name = zipfilename[:-4]
-    zipdir = os.path.join(ziproot, zipdir_name)
-    zip_ref.extractall(zipdir)
-    zip_ref.close()
-    return zipdir
+def run_once(submission_dir):
+    copy_src(submission_dir, project_src_root)
+    sbt_test(submission_dir)
+    input("Press Enter to continue...")
+    git_check()
 
-def run_once(zipfpath):
-    prompt("{} STARTING {} {}".format("=" * 40, zipfpath, "=" * 40))
-    zipfilename = os.path.basename(zipfpath)
-    zipdir = zipto(zipfpath, zipfilename)
-    copy_src(zipdir, project_src_root)
-    retcode = sbttest()
-    if retcode != 0:
-        report(zipfilename)
-    else:
-        prompt("DONE: {}".format(zipfilename))
 
 def run_many(root):
-    for f in os.listdir(ziproot):
-        print(f)
-        if f.endswith(".zip"):
-            fpath = os.path.join(ziproot, f)
-            prompt("=== {}".format(fpath))
-            run_once(fpath)
+    for submission in os.listdir(root):
+        file_path = os.path.join(root, submission)
+        if not os.path.isdir(file_path):
+            warn("{} not dir, ignore".format(file_path))
+        else:
+            run_once(file_path)
     prompt("DONE!")
 
-zipfile_root = os.path.join(DIR, "STUDENTS")
-
 if __name__ == '__main__':
-    run_many(zipfile_root)
-    cmd = "git checkout {}".format(project_src_root)
-    call(cmd)
+    submissions = os.path.realpath(os.path.join(DIR, os.path.pardir, "markable"))
+    run_many(submissions)

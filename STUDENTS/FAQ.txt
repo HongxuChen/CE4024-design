@@ -3,14 +3,8 @@
 Q: Is it safe to assume that the length of the secret p1Suffix is always the
 same as the block size (i.e. 8 bytes for DES, 16 bytes for AES)?
 
-A: Yes. Indeed there are some inconsistencies between the new Attacker1.java
-(since we used "a19q-j*" which is 7 bytes) and the problem description pdf
-document. However do pay attention to "Utils.isConsistent" which we use for
-checking whether the crack for the suffix succeeds or not. In this sense, they
-are almost equivalent as long as the suffix size is <= block size. Despite
-that, in the unit tests that are used to check your implementations, we only
-use the test cases where secret values(suffixes) are of exactly the same length
-as the block size (i.e., 8 bytes).
+A: Yes, it has to be 8 bytes (previous example was not; but we updated in .zip
+template file).
 
 
 Q: Is it allowed to manipulate secret key "s" e.g., copy/split/encrypt it?
@@ -24,18 +18,9 @@ final solution (which is a byte array).
 # Problem 2
 
 Q: When I call mac0 (or mac3) with the same input, every time run I get a
-different result. What's wrong? 
+different result?
 
-A: This is because of the "CBC" mode we used in our encryption initialization
-procedure: the initialization vector (IV) brings some randomness; therefore for
-different runs the Oracle2 instance is initialized with different IVs. However
-for a single run/session, the results should be the same for the same input
-  (e.g., you can try calling oracle2.mac0 twice to see whether the result is
-  the same).  Note that in real world scenarios, oracle2 is indeed initialized
-  once and then it will work as a server.  For a single unit test in our unit
-  tests (we provide 6 unit tests for Problem 2), the Oracle2 instance is *only
-  initialized once*.
-
+A: The latest version (.zip template) fixes the issue.
 
 # Both
 

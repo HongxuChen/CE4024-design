@@ -50,6 +50,7 @@ def sbttest():
 
 
 ziproot = os.path.join(DIR, os.path.pardir, "cecz4024_submissions")
+print("ziproot={}".format(ziproot))
 if not os.path.isdir(ziproot):
     os.makedirs(ziproot)
 
@@ -74,9 +75,10 @@ def run_once(zipfpath):
         prompt("DONE: {}".format(zipfilename))
 
 def run_many(root):
-    for f in os.listdir(root):
+    for f in os.listdir(ziproot):
+        print(f)
         if f.endswith(".zip"):
-            fpath = os.path.join(root, f)
+            fpath = os.path.join(ziproot, f)
             prompt("=== {}".format(fpath))
             run_once(fpath)
     prompt("DONE!")

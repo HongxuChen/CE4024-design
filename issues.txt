@@ -1,0 +1,32 @@
+- The 4 files are:
+Attacker1.pdf
+Attacker1.java
+Attacker2.pdf
+Attacker2.java
+
+- Don't include any print statements (e.g., "System.out.println") in your implementation; you have 2 choices for your debugging/logging purpose:
+
+1. use "Logger" such as the ones used in Oracle1.java/Oracle2.java
+2. comment any occurrences you use before submission
+
+- For both problems, brute force is wrong
+
+- Before submission, please make sure your hacking works on the following tests
+
+Problem 1:
+key1 = "abcdefgh".getBytes()
+suffix1 = "01234567".getBytes()
+
+key2 = ByteUtils.fromHexString("e904096280b30907")
+suffix2 = "!>*!A-@$`".getBytes()
+
+key3 = ByteUtils.fromHexString("e904096280b30907")
+suffix3 = ByteUtils.fromHexString("2063d34e00a9da62")
+
+Problem 2:
+macKey = ByteUtils.fromHexString("a10f773560408799")
+
+input 1: ByteUtils.fromHexString("a1d38873932046d3")
+input 2: ByteUtils.fromHexString("0000000000000000000000000000000000000000000000000000000000000000a1d38873932046d3")
+input 3: ByteUtils.fromHexString("619d336b7439146d335a1d243873936d3204c9a1d8739320253832ff9e")
+input 4: Byteutils.fromHexString("a1d8739320325389932619d336b7439146d35a1d24773873936d3204c931ff9e")
